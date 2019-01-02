@@ -17,7 +17,7 @@ int main() {
     int writing = write(to_server, input, BUFFER_SIZE);
     int reading = read(from_server, output, BUFFER_SIZE);
 
-    printf("server msg:[%s]\n", output);
+    printf("server msg: %s\n", output);
 
   }
 }

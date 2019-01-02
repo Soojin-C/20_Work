@@ -6,30 +6,21 @@
   Sets *to_client to the file descriptor to the downstream pipe.
   returns the file descriptor for the upstream pipe.
   =========================*/
-int server_handshake(int *to_client) {
-    // create pipe
-    int well_known_pipe = mkfifo("main", 0644);
-    int receive_msg = open("main", O_RDONLY);
 
-    // receive message
-    char message[HANDSHAKE_BUFFER_SIZE];
-    int reading_pipe = read(receive_msg, message, HANDSHAKE_BUFFER_SIZE);
-    printf("message: %s\n", message);
 
-    // remove pipe
-    remove("main");
+void server_handshake2 (int *to_client, int *from_client, char * message){
 
-    // connects to private fifo
-    *to_client = open(message, O_WRONLY);
+  //char message[HANDSHAKE_BUFFER_SIZE];
 
-    // send initial message
-    int writing = write(*to_client, ACK, HANDSHAKE_BUFFER_SIZE);
+  *to_client = open(message, O_WRONLY);
 
-    // get response from client
-    reading_pipe = read(receive_msg, message, HANDSHAKE_BUFFER_SIZE);
-    printf("message: %s\n", message);
-    // return fd to wkp
-    return receive_msg;
+  int writing = write(*to_client, ACK, HANDSHAKE_BUFFER_SIZE);
+
+  int reading_pipe = read(*from_client, message, HANDSHAKE_BUFFER_SIZE);
+  printf("message: %s\n", message);
+
+  printf("Handshake Done\n");
+
 }
 
 
